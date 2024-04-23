@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
+from django.core.mail import send_mail
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,12 +27,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+LOGIN_REDIRECT_URL= 'dashboard'
 # Application definition
 
 INSTALLED_APPS = [
     'cars.apps.CarsConfig',
     'pages.apps.PagesConfig',
+    'accounts.apps.AccountsConfig',
+    'contacts.apps.ContactsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'ckeditor',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    # Providers
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
 
 ]
 
@@ -52,7 +62,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',  # Add this line
 ]
+
 
 ROOT_URLCONF = 'carzone.urls'
 
@@ -138,3 +150,20 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+# messages
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.INFO: "danger",
+}
+
+SITE_ID = 1
+# Email sending
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'b210021@nitsikkim.ac.in'
+EMAIL_HOST_PASSWORD = 'Ps7551055881#'
+EMAIL_USE_TLS = True
+
+
+# Whitenoise settings
